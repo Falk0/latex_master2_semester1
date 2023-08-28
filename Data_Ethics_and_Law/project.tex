@@ -1,0 +1,69 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{booktabs}
+
+\usepackage{listings} %Alternative to minted
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1em}
+% figure support
+\usepackage{import}
+\usepackage{xifthen}
+\pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+
+\pdfsuppresswarningpagegroup=1
+
+\title{Project}
+\author{Linus Falk}
+\begin{document}
+\maketitle
+\section{Introduction}
+Example text and citation \cite{dqn1}.
+\begin{lstlisting}[language=Python]
+test
+\end{lstlisting}
+
+
+\begin{thebibliography}{1}
+
+
+\bibitem{sutton} Richard S. Sutton and Andrew G. Barto (2018). Reinforcement learning - An introduction
+
+
+\end{thebibliography}
+
+\end{document}
