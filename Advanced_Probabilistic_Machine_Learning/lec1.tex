@@ -6,7 +6,7 @@
 This course bla bla bla
 
 \section{Probability review}
-Let first take a look at the \emph{Sample space}: 
+To begin with, lets start with a review of what we already know about probability and a look at the \emph{Sample space}: 
 \begin{itemize}
     \item Dice: $\Omega$ = \{1,2,3,4,5,6\}
     \item Coin flip: $\Omega$ = \{heads, tails\}
@@ -23,7 +23,9 @@ Three important axioms to remember are.
     \item For disjoint sets, $A_1$,$A_2$, $\dots$ \\ $P(A_1 \cup A_2 \cup \dots) = P(A_1) + P(A_2) + \dots$         
 \end{enumerate}
 
-To sum it up here are some examples:
+% disjoint set, add probability of getting 1 and 2 with a dice
+
+To sum it up here are some consequences of the these axioms:
 
 \begin{enumerate}
     \item $A \subseteq B \Rightarrow P(A) \le P(B)$
@@ -32,6 +34,7 @@ To sum it up here are some examples:
     \item $0 \le P(A) \le 1$
     \item $P(A \cup B)  = P(A) + P(B) - P(A\cap B)$
 \end{enumerate}
+
 
 \subsection{Conditional probability}
 The \textcolor{red}{definition} of conditional probability for two events are the following:
@@ -42,7 +45,7 @@ The \textcolor{red}{definition} of conditional probability for two events are th
 
 Provided that the probability of event A is greater than 0, $P(A) > 0$.
 From this we can derive the \textbf{product rule:} $P(A \cap B) = P(B|A)P(A)$
-
+% Given that we have seen event A what is the probability of see B
 
 \subsection{Bayes theorem}
 Given two events called A and B:
@@ -76,16 +79,21 @@ Given two events called A and B:
     and by the law of total probability: \\
     $P(+) = P(+ \cap \text{Disease}) + P(+ \cap \text{No disease})$ \\
     $P(+) = P(+|\text{disease})P(\text{disease}) + (1-P(-|\text{No disease}))(1-P(disease))$ \\
-    $P(+) = \text{tpr} \dot p + (1 - \text{tnr})\dot (1-p)$ \\
-
+    $P(+) = \text{tpr} \cdot p + (1 - \text{tnr})\dot (1-p)$ \\
+    
     \vspace{2em}
+    \includegraphics{/Users/linusfalk/Documents/latex/latex_master2_semester1/figures/new-figure-1693225279114.pdf}
 
     Hence we have:
 
     \begin{equation}
-        P(disease|+) = \frac{0.99 \cdot 0.01} {0.99 \cdot 0.01 + 0.01 \cdot 0.99} = 0.5
+        P(\text{disease}|+) = \frac{0.99 \cdot 0.001} {0.99 \cdot 0.01 + 0.001 \cdot 0.99} \approx \frac{1} {11} 
     \end{equation}
 \end{example}
+
+% tpr true postive rate
+% tnr true negative rate
+% The prior knowledge has a huge effect on the result, the medical example. Often we the testperson has some kind of symptom making and is the 0.001 is higher
 
 \subsection{Random variables}
 The definition of a \textcolor{red}{random variable} $\mathcal{X}$ is a quantity that depends on a random event. Where a
@@ -102,7 +110,7 @@ A \textcolor{red}{probability density function} $p(x)$ describes the probability
 
 \begin{figure}[ht!]
 \centering
-\includegraphics{/Users/linusfalk/Documents/latex/latex_master2_semester3/figures/new-figure-1693205116382.pdf}
+\includegraphics{/Users/linusfalk/Documents/latex/latex_master2_semester1/figures/new-figure-1693205116382.pdf}
 \caption{Example of caption}
 \label{fig:example}
 \end{figure}
@@ -160,7 +168,7 @@ In probabilistic modelling we consider two types of variables:
 \begin{wbox}{}
     In \textbf{probabilistic modelling} we treat \emph{both} the \textcolor{blue}{observed variables} and the \textcolor{red}{latent variables} as \textbf{random variables} 
 \end{wbox}
-s0
+
 
 We model this relationship between $\textcolor{red}{\mathcal{D}}$ and $\textcolor{blue}{\Theta}$ with its \textbf{Joint distribution}
 
@@ -186,7 +194,7 @@ We can now find $p(\textcolor{red}{\Theta} | \textcolor{blue}{\mathcal{D}})$ usi
 \begin{definition}{}
 \begin{itemize}
     \item $\textcolor{blue}{\mathcal{D}}$ : observed data
-    \item $\textcolor{red}{\Theta}$ : latent variables explaining the data
+    \item $\textcolor{red}{\Theta}$ : latent variables explaining the data 
     \item $p(\textcolor{red}{\Theta})$ : \textbf{prior} belief of latent variables before seeing data
     \item $p(\textcolor{blue}{\mathcal{D}}|\textcolor{red}{\Theta})$: \textbf{likelihood} of the data in view of the latent variables
     \item $p(\textcolor{red}{\Theta}|\textcolor{blue}{\mathcal{D}})$: \textbf{posterior} belief of latent variables in view of data 
@@ -194,6 +202,25 @@ We can now find $p(\textcolor{red}{\Theta} | \textcolor{blue}{\mathcal{D}})$ usi
 \end{itemize}
 \end{definition}
 
+% latent, parameters, that we want to learn for example
+
+\begin{example}{Example: Coin flip (>Frequentist viewpoint)}
+    \begin{itemize}
+        \item $x \in \{ 0,1\}$ represent the outcome of flipping a damaged coin 
+        \item $p(x=1 | \Theta) = \Theta$, is a deterministic parameter 
+        \item Nor prior belief encoded 
+    \end{itemize}
+    
+    \vspace{2em}
+    
+    \textbf{Question:} After we observe $N$ coin flips $\mathcal{D} = \{x_1, \dots, x_N\}$, which $\textcolor{red}{\hat{\Theta}}$ makes the observed data most likely?
+    
+    \textbf{Solution:} Maximize the likelihood function $p(\mathcal{D}|\textcolor{red}{\Theta})$
+    
+    \includegraphics{/Users/linusfalk/Documents/latex/latex_master2_semester1/figures/new-figure-1693228570232.pdf}
+  
+    
+    \end{example}
 
 \begin{example}{Example: Coin flip (Bayesian viewpoint)}
 \begin{itemize}
@@ -230,16 +257,18 @@ Probabilistic/Bay inference is a flexible way of dealing the machine learning pr
 \textbf{Probability distribution} is a function that describes the likelihood of obtaining the possible values that a random variable can assume. \textbf{Conditional and marginalization} are two basic rules for manipulating probability distributions. \textbf{Frequentist vs Bayesian}: the first assume true values underlying some experiment and the second require some initial belief to be set on possible values.
 
 \begin{itemize}
-    \item Bayes theorem: $p(x|y) = p(y|x)p(x)/p(y)$
+    \item \textbf{Bayes theorem}, $p(x|y) = p(y|x)p(x)/p(y)$
     \item \textbf{Prior}, belief of parameters before we have seen any data
     \item \textbf{Likelihood}, belief of data in view of the parameters
     \item \textbf{Posterior}, belief of parameters after inferring data
 \end{itemize}
 
 
+% After lecture 4 get started on mini project 
+% Report October 6
 
 
 
-
+% Go over Marginalization and conditioning again, joint density. 
 
 
