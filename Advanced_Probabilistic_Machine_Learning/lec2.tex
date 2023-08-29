@@ -1,0 +1,276 @@
+\section{Bayes' theorem}
+We can find $p (\Theta|\mathcal{D})$ by using \textbf{Bayes' theorem}
+
+\begin{equation}
+    p (\theta|\mathcal{D}) = \frac{p (\mathcal{D}|\Theta)p(\Theta)} {p(\mathcal{D})} 
+\end{equation}
+
+We can view $p(\mathcal{D})$ as a normalized constant and if we view the quantities as functions
+of $\Theta$ we can write:
+
+\begin{equation}
+    \underset{\text{posterior}}{p (\Theta|\mathcal{D})}  \propto \underset{\text{likelihood}}{p (\mathcal{D}|\Theta)} \underset{\text{prior}}{p(\Theta)}
+\end{equation}  
+
+$\propto$ means that it is proportional with respect to $\Theta$
+
+\subsection*{Binomial-beta conjugate pair}
+The binomial-beta conjugate pair refers to the Bayesian statistical framework where the binomial distribution, describing the likelihood of observed successes and failures, is combined with a beta distribution prior, resulting in a beta distribution posterior.
+
+\begin{example}{Example: Flipping a damanged coin}
+    \begin{itemize}
+        \item x = 1 represents "head" and x = 0 represents "tail"
+        \item The probability of x = 1 is:
+            $p(x=1 | \mu) = \mu, \quad 0 \le \mu  \le 1$
+    \end{itemize}
+    we assume a damaged coin here, so it is not necessary 0.5
+    
+    \vspace{2em}
+
+    \textbf{Question:} Given a dataset $\mathcal{D} = \{ x_1, \dots, x_n\}$, what is $p(\mu|\mathcal{D})$?
+
+    \vspace*{1em}
+
+    \textbf{Solution:} Bayes' theorem states that
+
+        \begin{equation}
+            p(\mu|\mathcal{D}) = \frac{p (\mathcal{D}|\mu)p(\mu)} {p(\mathcal{D})} 
+        \end{equation}
+
+        Find the likelihood and prior and then multiply! Lets start with the likelihood \\
+        We know that :
+
+        \begin{equation}
+        \begin{aligned}
+            p(x=1|\mu) = \mu \\
+            p(x=1|\mu) = 1 - \mu
+        \end{aligned}
+        \end{equation}
+        which is known as the \textcolor{red}{Bernoulli} distribution
+% plug in x into the distribution 
+        \begin{equation}
+            p(x|\mu) = \text{Bern}(x;\mu) = \mu^{x}(1-\mu)^{1-x}
+        \end{equation}
+
+        The observations $x_1, \dots, x_N$ are \textcolor{red}{conditionally independent} given $\mu$ and the likelihood is then:
+
+        \begin{equation}
+        \begin{aligned}
+            p(x_1, \dots, x_N | \mu) = \prod_{n=1}^{N} p(x_n|n) \\
+            = \prod_{n=1}^{N} p(x_n|n) \mu^{x_n}(1-\mu)^{1 - x_n} \\
+            = \mu^{m} (1-\mu)^{N-m}
+        \end{aligned}
+        \end{equation}
+        where $m = \sum_{n=1}^{N}x_n$ i.e the number of heads. \textbf{Note}: the likelihood only depend on the data $\mathcal{D}$ via m. 
+        Hence we can modify our problem slightly $p (\mu|m) \propto \underset{\text{likelihood}}{p (m|\mu)} \underset{\text{prior}}{p(\mu)}$
+
+        Hence the likelihood is given by the \textcolor{red}{binomial distribution}
+
+        \begin{equation}
+            p(m|\mu) = \text{Bin}(m;N,\mu) = \begin{pmatrix} N \\ M \end{pmatrix} \mu^{m}(1-\mu)^{N-m}
+        \end{equation}
+
+        where $\begin{pmatrix} N \\ m \end{pmatrix} = \frac{N!} {(N-m)!m!} $ is the number of sequences giving $m$ heads. 
+
+        \vspace{1em}
+
+        Remember Bayes theorem $p(\mu|m) \propto p(m|\mu)p(\mu)$. There exists multiple possible prior distributions $p(\mu)$ and we opt for
+        a prior which has attractive analytical properties. So we choose a prior such that the posterior will be of the same functional form as the prior. We call this a \textcolor{red}{conjugate prior}.
+        The conjugate prior of the Binomial distribution is the \textcolor{red}{Beta distribution}:
+        
+       \begin{equation}
+       \begin{aligned}
+        \text{Beta}(\mu; a,b ) \propto \mu^{a-1} (1-\mu)^{b-1} \\
+        = \frac{\Gamma (a+b)} {\Gamma(a)\Gamma(b)} \mu^{a-1}(1-\mu)^{b-1} \\
+        \text{where } \Gamma(a) = \int_{0}^{\infty} e^{-x}x^{a-1}\,\text{d}x  
+       \end{aligned}
+       \end{equation}
+% Beta distribution fulfill def on 0-1 and its flexible
+       The posterior can now be computed
+
+       \begin{equation}
+       \begin{aligned}
+        p(\mu|m) \propto p(m|\mu)p(\mu) \\
+        = \text{Bin} (m; N, \mu) \text{Beta}(\mu;a,b) \\
+        \propto \mu^{m}(1-\mu)^{N-m}\mu^{a-1}(1-\mu)^{b-1} \\
+        = \mu^{m+a-1}(1-\mu)^{N-m+b-1}
+       \end{aligned}
+       \end{equation}
+
+
+    \end{example}
+
+    \begin{example}{Example: cont. }
+        Hence is the posterior also a Beta distribution:
+ 
+        \begin{equation}
+        \begin{aligned}
+            p(\mu|m) = \text{Beta}(\mu; a^{\star},b^{\star}) \\
+            \text{where} a^{\star} = m+1, b^{\star} = N-m+b 
+        \end{aligned}
+        \end{equation}
+    
+    \textbf{Bayesian inference:}
+    \begin{itemize}
+        \item Start with equal probability for all $\mu \Rightarrow \text{Beta}(\mu;1,1) =1$
+        \item Assume that we get one data point $x_1 = 1$
+        \item The posterior $\propto$ likelihood $\times$ prior
+    \end{itemize} 
+
+    Continue and assume we get new data points, $N = 5$ of which $m =4$ are heads, $\mathcal{D} = \{1,0,1,1,1\}$. \textcolor{red}{See slides, update later}
+
+    \end{example}
+
+
+
+    \subsection*{Real world applications}
+    To give an idea of then this can be used, here are some real world applications:
+    
+    \begin{itemize}
+        \item \textbf{Engineering}: Estimating the proportion of aircraft turbines blades that posses a structural defect after fabrication.
+        \item \textbf{Social science}: Estimating the proportion of individuals who respond yes on a census question. 
+        \item \textbf{Data science}: Estimating the proportion of individuals who click on an ad when visiting a website 
+    \end{itemize}
+
+    \section{Gauss-Gauss conjugate pair}
+    The Gauss-Gauss conjugate pair refers to the Bayesian statistical framework where a Gaussian (normal) distribution likelihood, describing observed data, is combined with a Gaussian prior, resulting in a Gaussian posterior. \\
+    So for a scalar random variable $X$:
+
+    \begin{itemize}
+        \item Expected value: \\
+        \begin{equation}
+            \mathbb{E}[X] = \int_{-\infty}^{\infty} xp(x)\,\text{d}x
+        \end{equation}
+        \item Variance: \\
+        \begin{equation}
+            \text{Var}[X] = \mathbb{E}[(X-\mu)^{2}]= \mathbb{E}[X^{2}] - \mu^{2}, \quad \text{where } \mu = \mathbb{E}[X] 
+        \end{equation}
+        \item Standard deviation: $\alpha = sqr^{\text{Var}[X]}$
+    \end{itemize}
+
+    For a scalar variable x. the Gaussian distribution can be written on the form:
+
+    \begin{equation}
+        \mathcal{N}(x; \hat{\mu}, \Sigma) =  \underset{Z}{\frac{1} {(2\pi)^{D/2} \sqrt{{\text{det}\Sigma}}}} \text{exp} \left( -\frac{1} {2} (x- \hat{\mu}^{T} \Sigma^{-1}(x-\hat{\mu}))  \right) 
+    \end{equation}
+    
+    \begin{itemize}
+        \item $\mathbb{E}[x] = \hat{\mu} $
+        \item Cov$[x] = \Sigma$
+        \item item $Z$ is the normalization constant
+    \end{itemize}
+    
+    We let:
+    \begin{equation}
+    \begin{aligned}
+        p(x) = \mathcal{N} (x; \mu, \sigma^{2}) \\
+        p(y | x) = \mathcal{N} (y;x, \eta^{2})
+    \end{aligned}
+    \end{equation}
+
+    We then have:
+
+    \begin{equation}
+    \begin{aligned}
+        p(x|y) = \frac{p(y|x)p(x)} {p(y)} \\
+        = \mathcal{N}(x; m, s^{2}) 
+    \end{aligned}
+    \end{equation}
+
+    with the following:
+
+    \begin{equation}
+    \begin{aligned}
+        s^{2} = \frac{1} {\sigma^{-2}+ \eta^{-2}} \\
+        m = \frac{\sigma^{-2} + \eta^{-2}y} {\sigma^{-2} + \eta^{-2}}  
+    \end{aligned}
+    \end{equation}
+
+    \subsection*{Expected value vector}
+    For a vector random variable $\textbf{X} = \begin{bmatrix} X_1 \\  \vdots \\ X_N \end{bmatrix}$ we have:
+    
+    \begin{itemize}
+        \item Expected value: \\
+        \begin{equation}
+            \begin{bmatrix} \mathcal{E}[X_1] \\ \vdots \\ \mathcal{E}[X_N] \end{bmatrix}
+        \end{equation}
+        \item The covariance matrix: \\
+        \begin{equation}
+            \text{Cov} [\bar{X}] = \mathcal{E}[(\bar{X}- \bar{\mu})(\bar{X}-\mu)^{T}] = \mathbb{E}[\textbf{XX}^{T}] - \bar{\mu}\bar{\mu}^{T}
+        \end{equation}
+    \end{itemize}
+
+\subsection*{Multivariate Gaussian}
+For a D-dimensional vector $x$, the \textcolor{red}{multivariate} Gaussian distribution can be written on the form:
+
+\begin{equation}
+    \mathcal{N} (x; \bar{\mu}, \Sigma ) = \mathcal{N}(x; \hat{\mu}, \Sigma) =  \underset{Z}{\frac{1} {(2\pi)^{D/2} \sqrt{{\text{det}\Sigma}}}} \text{exp} \left( -\frac{1} {2} \underset{\text{quadtratic form}}{(x- \hat{\mu})^{T} \Sigma^{-1}(x-\hat{\mu}))}  \right) 
+\end{equation}
+
+\begin{itemize}
+    \item $\mathbb{E}[x] = \mu$
+    \item Cov$[x] = \Sigma$
+    \item $Z$ is the normalization constant 
+\end{itemize}
+
+The Gaussian in proportional to $e^{\text{quadtratic form}}$
+
+\subsection*{Partitioned Gaussian}
+Partition the Gaussian random vector $\bar{x} \sim \mathcal{N} (\bar{\mu}, \Sigma)$, where
+$ \bar{x} \in \mathbb{R}^{n}$ into two sets of random variables $\bar{x_a} \in \mathbb{R}^{n_a}$ and $\bar{x_b} \in \mathbb{R}^{n_b}$,
+
+\begin{equation}
+    x = \begin{pmatrix} \bar{x_a} \\ \bar{x_b} \end{pmatrix}, \quad \bar{\mu} = \begin{pmatrix} \bar{\mu_a} \\ \bar{\mu_b}  \end{pmatrix}, \quad \Sigma = \begin{pmatrix} \Sigma_{aa}&  \Sigma_{ab}\\ \Sigma_{ba}& \Sigma_{bb} \end{pmatrix} 
+\end{equation}
+
+\newpage
+
+\subsection*{Affine transformation of multivariate Gauss}
+
+\begin{wbox}{Corollary 1 (Affine transformation - conditional)}
+    If we assume that $\bar{x_a}$ as well as $\bar{x_b}$ conditioned on $\bar{x_a}$ are Gaussian distributed according to:
+
+    \begin{equation}
+    \begin{aligned}
+        p(\bar{x_a}) = \mathcal{N}(\bar{x_a}; \bar{\mu_a}, \Sigma), \\
+        p(\bar{x_a}|\bar{x_b}) = \mathcal{N}(\bar{x_b}; \textbf{A}\bar{x_a} + \textbf{b}, \Sigma_{b|a} )  
+    \end{aligned}
+    \end{equation}
+
+    Then the conditional distribution of $\bar{x_a}$ given $\bar{x_b}$  is:
+
+    \begin{equation}
+        p(\bar{x_a}|\bar{x_b}) = \mathcal{N}(\bar{x_a}; \bar{\mu_{a|b}}, \Sigma_{a|b})
+    \end{equation}
+
+    Together with:
+
+    \begin{equation}
+    \begin{aligned}
+        \bar{{\mu_{a|b}}} = \Sigma_{a|b} (\Sigma^{-1})
+    \end{aligned}
+    \end{equation}
+
+
+
+\end{wbox}
+
+\begin{equation}
+\begin{aligned}
+    p(x|y) \propto p(y|x)p(x) \\
+    \propto  e^{-\frac{-(y-x)^{2}} {2\eta^{2}} } e^{- \frac{(x-\mu)^{2}} {2 \sigma^{2}} } \\
+    \text{complete the squares} \\
+    \frac{y^{2} - 2x + x^{2}} {\eta^{2} } + \frac{x^{2}-2x\mu + \mu^{2}} {\sigma^{2}} \\
+    = (\frac{1} {\eta^{2}} + \frac{1} {\sigma^{2}} ) x^{2} - 2(\frac{y} {\eta^{2}} + \frac{\mu} {\sigma^{2}} )x + \frac{y^{2}} {\eta^{2}} + \frac{\mu^{2}} {\sigma^{2}} \\
+    = a (x- \frac{b} {a} )^{2} - \frac{b^{2}} {a} + c \\
+    e^{\frac{1} {2}a(x - \frac{b} {a} )^{2} } e^{-\frac{b^{2}} {a} +c }
+\end{aligned}
+\end{equation}
+
+
+
+% 
+% 
+% 
+% 
+% 
