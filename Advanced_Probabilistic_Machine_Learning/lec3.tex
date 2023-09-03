@@ -1,0 +1,250 @@
+%!TEX root = master.tex
+
+\section{Supervised machine learning}
+Supervised machine learning involves methods for learning a model for the relationship between the input $x$ and the output $y$ from some observed data set $\mathcal{D} = \{(x_1,y_1), (x_2,y_2), \ldots, (x_N,y_N)\}$. This lecture will cover how we can use what we learned in the course: Statistical machine learning into use with the Bayesian concept. We will do this by introducing: \textbf{Bayesian linear regression}
+
+The model is after training used to \textbf{predict} the output from an unseen input. The question for us is, how to reformulate the supervised machine learning problem into the probabilistic setting?
+
+
+\subsection{Classic linear regression}
+Lets recall the linear regression form the SML course:
+
+\begin{equation}
+	y_n = \bm{w}^{T} \bm{x_n} \epsilon_n, \quad \epsilon \sim \mathcal{N}(0,\Sigma^{2}),  
+\end{equation}
+
+\begin{itemize}
+	\item $y_n$ - observed \textcolor{red}{random} variable
+	\item \textbf{w} - unknown \textcolor{blue}{deterministic} variable 
+	\item $x_n$ known \textcolor{blue}{deterministic} variable
+	\item $\epsilon_n$ - unknown \textcolor{red}{random} variable
+	\item $\sigma $ - known \textcolor{blue}{deterministic} variable 
+\end{itemize}
+
+\subsection{Linear regression: Maximum likelihood}
+There are two equivalent ways of expressing the linear regression model:
+
+\begin{itemize}
+	\item $y_n = \bm{w}^{T}x_n + \epsilon_n, \quad \epsilon_n \sim \mathcal{N}(0, \sigma ^{2} )$ 
+	\item $p(y_n|\bm{w}) = \mathcal{N}(y_n; \bm{w}^{T}\bm{x}_n, \sigma ^{2}$ 
+\end{itemize}
+
+The likelihood $p(y_n|\bm{w})$ is given by:
+
+\begin{equation}
+	p(\bm{y}|\bm{w}) = \prod^N_{n=1} p(y_n|w) =  \prod^N_{n=1} \mathcal{N}(y_n; w^{T}x_n, \sigma ^{2}) = \mathcal{N}(\bm{y}; \bm{Xw}, \sigma ^{2}\bm{I}_N)
+\end{equation}
+
+The solution is found by maximizing the likelihood: $\hat{w} = \underset{w}{\text{arg max}} p(\bm{y}|w)$ 
+
+\subsection{Bayesian linear regression}
+We now introduce a prior over the parameter $w$. Bayesian linear regression model: 
+
+\begin{wbox}{}
+\begin{equation}
+\begin{aligned}
+	y_n = \bm{w}^{T}\bm{x}_n + \epsilon_n, \quad \epsilon \sim \mathcal{N}(0, \sigma ^{2}), \quad n=1,\ldots, N, \\
+	\bm{w} \sim p(\bm{w})
+\end{aligned}
+\end{equation}
+\end{wbox}
+
+The present assumptions for the model:
+\begin{itemize}
+	\item $y_n$ - observed \textcolor{red}{random} variable
+	\item \textbf{w} - unknown \textcolor{red}{random} variable 
+	\item $x_n$ known \textcolor{blue}{deterministic} variable
+	\item $\epsilon_n$ - unknown \textcolor{red}{random} variable
+	\item $\sigma $ - known \textcolor{blue}{deterministic} variable 
+\end{itemize}
+
+The task is to compute the posterior distribution: $p(w|y)$.
+
+Recall from lecture two, the multivariate Gaussian. For a D-dimensional vector $x$, the multivariate Gaussian distribution can be written on the form:
+
+\begin{equation}
+	\mathcal{N}(x; \bm{\mu}, \Sigma) =\underset{Z}{ \frac{1} {(2 \pi) ^{D/2}\sqrt{\text{get}\Sigma}} } \text{exp} \left( - \frac{1} {2} (x- \bm{\mu })^{T}\Sigma ^{-1}(x- \bm{\mu }) \right)  
+\end{equation}
+
+\begin{itemize}
+	\item $\bm{\mu }$ is the mean vector
+	\item $\Sigma$ is the co variance matrix 
+	\item Z is the normalization constant 
+\end{itemize}
+
+\begin{wbox}{}
+The probabilistic model is given by:
+
+\begin{equation}
+\begin{aligned}
+	pp(y|w) = \mathcal{N}(y;\bm{Xw}, \beta ^{-1}\bm{I}_N), \quad \text{likelihood} \\
+	p(w)= \mathcal{N}(w; \bm{m}_0, S_0), \quad \text{prior distribution}
+\end{aligned}
+\end{equation}
+\end{wbox}
+
+The task is to compute the posterior distribution: $p(w|y)$. The solution is to identify:
+\begin{equation}
+	x_a = w, \quad x_b = y
+\end{equation}
+
+We use \text{Corollary 1} to get the posterior distribution:
+\begin{equation}
+	pp(w|y)= \mathcal{N}(w,\bm{m}_N, \bm{S}_n)
+\end{equation}
+
+
+where:
+\begin{equation}
+\begin{aligned}
+	\bm{m}_N = \bm{S}_N (\bm{S}^{-1}\bm{m}_0 + \beta \bm{X}^{T}\bm{y)} \\
+	\bm{S}^{-1} = \bm{S}_0^{-1} + \beta \bm{X}^{T}\bm{X}
+\end{aligned}
+\end{equation}
+
+\begin{example}{Example: Bayesian linear regression}
+Consider the problem of fitting a straight line to noisy measurements. We let the model be : $y_n \in \mathbb{R}, x_n \in \mathbb{R}$ 
+
+\begin{equation}
+	y_n = w_0 + w_1 x_n + \epsilon_n), \quad n=1, \ldots, N
+\end{equation}
+where:
+\begin{equation}
+\begin{aligned}
+	x_n = \begin{bmatrix} 1 \\ x_n \end{bmatrix}, \quad w = \begin{bmatrix} w_0 \\ w_1 \end{bmatrix} \\
+	\epsilon _n \sim \mathcal{N}(w | (0,0) ^{T}, \alpha ^{-1} \bm{I}_2), \quad \text{where } \alpha = 2
+\end{aligned}
+\end{equation}
+
+\begin{itemize}
+	\item The prior : $p(w) = \mathcal{N}(w|\begin{pmatrix} 0& 0 \end{pmatrix} ^{T}, \frac{1} {2} \bm{I}_2$ 
+	\item The likelihood function: $p(y_2|w) = \mathcal{N}(y_n|w_0+w_1x_2, \beta ^{-1}$
+	\item Posterior/prior: $p(w|y_2) = \mathcal{N}(w|\bm{m}_2,$  
+ 	\item $m_3 = \beta  \bm{S}_3\bm{X}^{T}\bm{y}$
+	\item $\bm{S}_3 = (\alpha \bm{I}_2 + \beta \bm{X}^{T}\bm{X}^{-1}$ 
+
+\end{itemize}
+
+\textbf{Predictive distribution}, for a new data point $(y_*, x_*)$  we have:
+
+\begin{equation}
+\begin{aligned}
+ 	p(y_x|w)= \mathcal{N}(y_*; \bm{x}_* ^{T}, \beta ^{-1}), \quad \text{likelihood} \\
+	p(w|y) = \mathcal{N}(w;\bm{m}_N, \bm{S}_N), \quad \text{posterior}
+\end{aligned}
+\end{equation}
+
+This can be applied to multiple types of regression, such as:
+
+\begin{itemize}
+	\item Linear: \\
+		\begin{equation}
+			f(x) = \bm{x}^{T}\bm{w}, \quad \bm{x}= \begin{bmatrix} 1,& x \end{bmatrix}^{T}
+		\end{equation}
+	\item Quadratic regression: \\
+		\begin{equation}
+			f(x) = \bm{x}^{T}\bm{w}, \quad \bm{x}= \begin{bmatrix} 1,& x,& x^{2} \end{bmatrix}
+		\end{equation}i
+	\item Switch regression: \\
+		\begin{equation}
+			f(x) = \bm{x}^{T}\bm{w}, \quad \bm{x}^{T}= \begin{bmatrix} h(x-S)& h(x-6)& \ldots& h(x+s) \end{bmatrix}, \quad h(x) = 
+		\end{equation}
+\end{itemize}
+
+
+\end{example}		
+
+\subsection{Hyperparameters}
+We have seen a few examples of how to find the posterior for a parameter $\bm{\theta}$ 
+
+\begin{equation}
+	p_\xi ( \theta |\mathcal{D}) = \frac{p_\xi (\mathcal{D}|} {\bm{ \theta } p_\xi (\mathcal{D})} 
+\end{equation}
+
+In probabilistic models we usually have \textbf{hyperparameters} $\xi $, for example:
+\begin{itemize}
+	\item Coin flip example: $\xi = \{a,b\} $, the parameters of the beta prior.
+	\item Bayesian linear regression: $\xi = \{ a,b\} $, precision of prior and the likelihood.
+\end{itemize}
+
+But how to choose these hyperparameters? We have some alternatives:
+
+\begin{enumerate}
+	\item Pick hyperparameters that reflects any prior knowledge of the problem.
+	\item The go-to solution for machine learning: $k$-fold cross validation.
+	\item The Bayesian alternative: Maximize the marginal likelihood.
+	\item And the even more Bayesian alternative: Put priors on the hyperparameters and do inference. 
+\end{enumerate}
+
+Since the cross validation alternative was covered in the last course we will only take a look at the two last options.
+
+\subsection{Bayesian approach 1: Marginal likelihood}
+The marginal likelihood/evidence $p_\xi (\mathcal{D)}$ says how probable the data $\mathcal{D}$ is in view of the hyperparameters $\xi $. With a similar argument as for the maximum likelihood idea that was presented in the SML course, we can select $\xi $  as :
+
+\begin{equation}
+	\hat{\xi } = \text{arg } \underset{\xi }{\text{max}} p_\xi (\mathcal{D})   
+\end{equation}
+
+\begin{wbox}{}
+Maximizing the likelihood often leads to overfit. \\
+Maximizing the \emph{marginal} likelihood rarely leads to overfit, (fewer parameters)
+\end{wbox}
+
+To maximize the marginal likelihood is sometimes referred to as the \emph{emperical Bayes}. We have to use numerical optimization, such as BFGS or similar to to optimize the marginal likelihood. The \textbf{idea} is to compute the gradient $\nabla_\xi p(y)$ and numerically estimate the Hessian $\nabla ^{2}_\xi p(y)$. Can be done with newtons methods, one step: $\xi ^{x+1} \leftarrow \xi ^{t}- |\nabla ^{2}_\xi p(y)|^{-1}	|\nabla_\xi p(y)|$. \textbf{Note} that it is important how you initialize the hyperparameter search. 
+
+\subsection{Bayesian approach 2}
+The probabilistic model with the unknown $w$ is given by:
+\begin{equation}
+\begin{aligned}
+	p(w) = \mathcal{N(w;\bm{m}_0, \alpha ^{-1}\bm{I}_D}) \\
+	p(y|w) = \mathcal{N}(y; \bm{Xw}, \beta ^{-1} \bm{I}_N)
+\end{aligned}
+\end{equation}
+
+which gives the posterior:
+
+\begin{equation}
+p(w|y)= \mathcal{N}(w;\bm{m}_N,S_N)
+\end{equation}
+
+Note here that using a Gaussian prior gives a Gaussian posterior. Hence the Gaussian prior is a \textcolor{red}{Conjugate prior} for the Gaussian likelihood with an unknown $w$. A question we might ask here is: \emph{What if also $\beta$ precision is unknown}.
+
+The probabilistic model with unknown $w$ and $ \beta $ is given by:
+
+\begin{equation}
+\begin{aligned}
+	pp(w| \beta ) = \mathcal{N}(w; \mathbb{m}_0, \beta ^{-1} \alpha ^{-1} \bm{I}_N) \text{Gam} ( \beta; a_0, b_0), \quad \text{prior} \\
+	pp(y|w) = \mathcal{N}(y;\bm{Xw}, \beta ^{-1} \bm{I}_N), \quad \text{likelihood}
+\end{aligned}
+\end{equation}
+
+which will give us the posterior:
+
+\begin{equation}
+	p(w, \beta |y)=\mathcal{N}(w;\bm{m}_N, \beta ^{-1}\bm{S}_N) \text{Gam}( \beta , a_N, b_N), \quad \text{posterior}
+\end{equation}
+
+Using a Gauss-Gamma prior gives a Gauss-Gamma posterior. Hence the Gauss-Camma prior is a conjugate prior to the Gaussian likelihood with unknown $w$ and unknown precision $ \beta $. For more information: look at exercise 2.11.
+
+\subsection{Summary of lecture 3}
+In this lecture we have introduced the Bayesian linear regression and:
+\begin{itemize}
+	\item How to learn the model
+	\item How to use the model for making predictions
+	\item How to use features
+\end{itemize}
+
+We also presented two Bayesian methods for selecting hyperparameters in a probabilistic model by:
+\begin{itemize}
+	\item Maximizing marginal likelihood
+	\item Using hyperpriors
+\end{itemize}
+
+
+
+
+
+
+
+
+

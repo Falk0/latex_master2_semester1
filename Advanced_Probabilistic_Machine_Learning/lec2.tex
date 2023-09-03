@@ -12,12 +12,13 @@ of $\Theta$ we can write:
     \underset{\text{posterior}}{p (\Theta|\mathcal{D})}  \propto \underset{\text{likelihood}}{p (\mathcal{D}|\Theta)} \underset{\text{prior}}{p(\Theta)}
 \end{equation}  
 
+
 $\propto$ means that it is proportional with respect to $\Theta$
 
 \subsection*{Binomial-beta conjugate pair}
 The binomial-beta conjugate pair refers to the Bayesian statistical framework where the binomial distribution, describing the likelihood of observed successes and failures, is combined with a beta distribution prior, resulting in a beta distribution posterior.
 
-\begin{example}{Example: Flipping a damanged coin}
+\begin{example}{Example: Flipping a damaged coin}
     \begin{itemize}
         \item x = 1 represents "head" and x = 0 represents "tail"
         \item The probability of x = 1 is:
@@ -232,7 +233,7 @@ $ \bar{x} \in \mathbb{R}^{n}$ into two sets of random variables $\bar{x_a} \in \
 
     \begin{equation}
     \begin{aligned}
-        p(\bar{x_a}) = \mathcal{N}(\bar{x_a}; \bar{\mu_a}, \Sigma), \\
+        p(\bar{x_a}) = \mathcal{N}(\bar{x_a}; \bar{\mu_a}, \Sigma_a), \\
         p(\bar{x_a}|\bar{x_b}) = \mathcal{N}(\bar{x_b}; \textbf{A}\bar{x_a} + \textbf{b}, \Sigma_{b|a} )  
     \end{aligned}
     \end{equation}
@@ -247,30 +248,148 @@ $ \bar{x} \in \mathbb{R}^{n}$ into two sets of random variables $\bar{x_a} \in \
 
     \begin{equation}
     \begin{aligned}
-        \bar{{\mu_{a|b}}} = \Sigma_{a|b} (\Sigma^{-1})
+        \bar{{\mu_{a|b}}} = \Sigma_{a|b} (\Sigma_a^{-1}\mu_{a} + \textbf{A}^{T} \Sigma^{-1}_{a|b}(\bar{x_b} - \textbf{b})) \\
+        \Sigma_{a|b} = (\Sigma_a^{-1} + \textbf{A}^{T} \Sigma_{b|a}^{-1}\textbf{A})^{-1} 
+    \end{aligned}
+    \end{equation}
+\end{wbox}
+
+\begin{wbox}{Corollary 2 (Affine transformation - Marginalization)}
+    If we assume that $\bar{x_a}$ as well as $\bar{x_b}$ conditioned on $\bar{x_a}$ are Gaussian distributed according to:
+
+    \begin{equation}
+    \begin{aligned}
+        p(\bar{x_a}) = \mathcal{N}(\bar{x_a}; \bar{\mu_a}, \Sigma_a), \\
+        p(\bar{x_a}|\bar{x_b}) = \mathcal{N}(\bar{x_b}; \textbf{A}\bar{x_a} + \textbf{b}, \Sigma_{b|a} )  
     \end{aligned}
     \end{equation}
 
+    Then the marginal distribution of $\bar{x_b}$ is  then given by $\bar{x_b}$  is:
 
+    \begin{equation}    
+        p(\bar{x_b}|\bar{x_b}) = \mathcal{N}(\bar{x_b}; \bar{\mu_{b}}, \Sigma_{b})
+    \end{equation}
 
+    Together with:
+
+    \begin{equation}
+    \begin{aligned}
+        \bar{{\mu_{b}}} = \textbf{A}\bar{\mu_a} + \textbf{b} \\
+        \Sigma_{b} = (\Sigma_{b|a} + \textbf{A} \Sigma_{a}\textbf{A})^{T} 
+    \end{aligned}
+    \end{equation}
 \end{wbox}
+
+
+\subsection*{Gaussian inference (scalar example) from Corollary 1}
+We let:
 
 \begin{equation}
 \begin{aligned}
-    p(x|y) \propto p(y|x)p(x) \\
-    \propto  e^{-\frac{-(y-x)^{2}} {2\eta^{2}} } e^{- \frac{(x-\mu)^{2}} {2 \sigma^{2}} } \\
-    \text{complete the squares} \\
-    \frac{y^{2} - 2x + x^{2}} {\eta^{2} } + \frac{x^{2}-2x\mu + \mu^{2}} {\sigma^{2}} \\
-    = (\frac{1} {\eta^{2}} + \frac{1} {\sigma^{2}} ) x^{2} - 2(\frac{y} {\eta^{2}} + \frac{\mu} {\sigma^{2}} )x + \frac{y^{2}} {\eta^{2}} + \frac{\mu^{2}} {\sigma^{2}} \\
-    = a (x- \frac{b} {a} )^{2} - \frac{b^{2}} {a} + c \\
-    e^{\frac{1} {2}a(x - \frac{b} {a} )^{2} } e^{-\frac{b^{2}} {a} +c }
+    p(x) = \mathcal{N}(x;\mu,\sigma^{2}) \\
+    p(y|x) = \mathcal{N}(y; x, \eta^{2})
 \end{aligned}
 \end{equation}
 
+With:
+
+\begin{equation}
+\begin{aligned}
+    \bm{x_a} = x, \quad \bm{\mu_a} = \mu, \quad \Sigma_a = \sigma^{2} \\
+    \bm{x_b} = y, \quad \textbf{A} = 1, \quad b \textbf{b} = 0, \quad \Sigma_{b|a} = \eta^{2}
+\end{aligned}
+\end{equation}
+
+Now with Corollary 1 this gives us:
+
+\begin{equation}
+    p(x|y) = \mathcal{N}(x;m,s^{2})
+\end{equation}
+
+where
+
+\begin{equation}
+\begin{aligned}
+    s^{2} = \frac{1} {\sigma^{-2} + \eta^{-2}} \\
+    m = \frac{\sigma^{-2}\mu 0 \eta^{-2}y} {\sigma^{-2} + \eta^{-2}}  
+\end{aligned}
+\end{equation}
+
+\begin{wbox}{}
+    \begin{equation}
+        \begin{aligned}
+            p(x|y) \propto p(y|x)p(x) \\
+            \propto  e^{-\frac{-(y-x)^{2}} {2\eta^{2}} } e^{- \frac{(x-\mu)^{2}} {2 \sigma^{2}} } \\
+            \text{complete the squares} \\
+            \frac{y^{2} - 2x + x^{2}} {\eta^{2} } + \frac{x^{2}-2x\mu + \mu^{2}} {\sigma^{2}} \\
+            = (\frac{1} {\eta^{2}} + \frac{1} {\sigma^{2}} ) x^{2} - 2(\frac{y} {\eta^{2}} + \frac{\mu} {\sigma^{2}} )x + \frac{y^{2}} {\eta^{2}} + \frac{\mu^{2}} {\sigma^{2}} \\
+            = a (x- \frac{b} {a} )^{2} - \frac{b^{2}} {a} + c \\
+            e^{\frac{1} {2}a(x - \frac{b} {a} )^{2} } e^{-\frac{b^{2}} {a} +c }
+        \end{aligned}
+        \end{equation}
+\end{wbox}
 
 
-% 
-% 
-% 
+\subsection*{Summarize lecture 2 with a few concepts}
+\textcolor{red}{Conjugate prior} is a propr ensuring that the posterior and the prior belong to the same probability distribution family. \textcolor{red}{Bernoulli distribution} is a distribution for binary random variables. 
+\textcolor{red}{Binomial distribution} is a distribution for the sum of multiple binary random variables.\textcolor{red}{Beta distribution}, the conjugate prior for the binomial distribution. \textcolor{red}{Gaussian distribution}, the well
+known probability density function with the shape of the bell curve. \textcolor{red}{Multivariate Gaussian distribution} is a generalization of the Gaussian distribution to higher dimensions.
+
+\begin{definition}{Theorem 1 - Marginalization}
+Partition the Gaussian random vector $\bm{x} \sim \mathcal{N}(\bm{\mu}, \Sigma)$ according to:
+
+ \begin{equation}
+    \bm{x} = \begin{pmatrix} \bm{x}_a \\ \bm{x_b} \end{pmatrix}, \quad \bm{\mu} = \begin{pmatrix} \bm{\mu_a} \\ \bm{\mu_b} \end{pmatrix}, \quad \Sigma = \begin{pmatrix} \Sigma_{aa}& \Sigma_{ab} \\ \Sigma_{ba}& \Sigma_{bb} \end{pmatrix}
+ \end{equation}
+
+ The marginal distribution is then given by: $p(\bm{x}_a) = \mathcal{N}(\bm{x}_a ; \bm{\mu}_a, \Sigma_{aa})$ 
+
+\end{definition}
+
+\begin{definition}{Theorem 2: Conditioning }
+    Partition the Gaussian random vector $\bm{x} \sim \mathcal{N}(\bm{\mu}, \Sigma)$ according to:
+
+    \begin{equation}
+        \bm{x} = \begin{pmatrix} \bm{x}_a \\ \bm{x_b} \end{pmatrix}, \quad \bm{\mu} = \begin{pmatrix} \bm{\mu_a} \\ \bm{\mu_b} \end{pmatrix}, \quad \Sigma = \begin{pmatrix} \Sigma_{aa}& \Sigma_{ab} \\ \Sigma_{ba}& \Sigma_{bb} \end{pmatrix}
+     \end{equation}
+    
+The conditional distribution $p(\bm{x}_a|\bm{x}_b)$ is then given by:
+
+\begin{equation}
+\begin{aligned}
+    p(\bm{x}_a|\bm{x}_b) = \mathcal{N}(\bm{x}_a;\bm{\mu}_{a|b}, \Sigma_{a|b}), \\
+    \bm{\mu} = \bm{\mu}_a + \Sigma_{ab}\Sigma_{bb}^{-1}(\bm{x_b}-\bm{\mu}_b) \\
+    \Sigma_{a|b} = \Sigma_{aa} - \Sigma_{ab} \Sigma_{bb}^{-1} \Sigma_{ba}
+\end{aligned}
+\end{equation}
+
+\end{definition}
+
+\begin{definition}{Theorem 3 - Affine transformation}
+    Lets assume that $\textbf{x}_a$ as well as $\textbf{x}_b$ conditioned on $\textbf{x}_a$ are Gaussian distributed according to following:
+
+    \begin{equation}
+    \begin{aligned}
+        p(\bm{x}_a) = \mathcal{N}(\bm{x}_a; \bm{\mu}, \Sigma_a), \\
+        p(\bm{x}_b|\bm{x}_a) = \mathcal{N}(\bm{x}_b; \textbf{A}\bm{x}_a + \textbf{b}, \Sigma_{b|a})
+    \end{aligned}
+    \end{equation}
+
+    The joint distribution of $\textbf{x}_a$ and $\textbf{x}_b$ is then:
+
+    \begin{equation}
+        p(\bm{x}_a|\bm{x}_b) = \mathcal{N} \left( \begin{bmatrix} \bm{x}_a \\ \bm{x}_b \end{bmatrix} ; \begin{bmatrix} \bm{\mu}_a \\ \textbf{A}\bm{\mu}_a + \textbf{b} \end{bmatrix}, \textbf{R} \right)
+    \end{equation}
+
+    with R equal to:
+
+    \begin{equation}
+        \textbf{R} = \begin{bmatrix} \Sigma_a & \Sigma_a \textbf{A}^{T} \\ \textbf{A}\Sigma_a & \Sigma_{b|a} + \textbf{A}\Sigma_a \textbf{A}^{T}  \end{bmatrix}
+    \end{equation}
+
+\end{definition}
+
+
+ 
 % 
 % 
