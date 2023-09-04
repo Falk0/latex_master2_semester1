@@ -192,11 +192,11 @@ Maximizing the \emph{marginal} likelihood rarely leads to overfit, (fewer parame
 
 To maximize the marginal likelihood is sometimes referred to as the \emph{emperical Bayes}. We have to use numerical optimization, such as BFGS or similar to to optimize the marginal likelihood. The \textbf{idea} is to compute the gradient $\nabla_\xi p(y)$ and numerically estimate the Hessian $\nabla ^{2}_\xi p(y)$. Can be done with newtons methods, one step: $\xi ^{x+1} \leftarrow \xi ^{t}- |\nabla ^{2}_\xi p(y)|^{-1}	|\nabla_\xi p(y)|$. \textbf{Note} that it is important how you initialize the hyperparameter search. 
 
-\subsection{Bayesian approach 2}
+\subsection{Bayesian approach 2: Hyperpriors}
 The probabilistic model with the unknown $w$ is given by:
 \begin{equation}
 \begin{aligned}
-	p(w) = \mathcal{N(w;\bm{m}_0, \alpha ^{-1}\bm{I}_D}) \\
+p(w) = \mathcal{N}(w;\bm{m}_0, \alpha ^{-1}\bm{I}_D)\\
 	p(y|w) = \mathcal{N}(y; \bm{Xw}, \beta ^{-1} \bm{I}_N)
 \end{aligned}
 \end{equation}
@@ -213,8 +213,8 @@ The probabilistic model with unknown $w$ and $ \beta $ is given by:
 
 \begin{equation}
 \begin{aligned}
-	pp(w| \beta ) = \mathcal{N}(w; \mathbb{m}_0, \beta ^{-1} \alpha ^{-1} \bm{I}_N) \text{Gam} ( \beta; a_0, b_0), \quad \text{prior} \\
-	pp(y|w) = \mathcal{N}(y;\bm{Xw}, \beta ^{-1} \bm{I}_N), \quad \text{likelihood}
+	p(w| \beta ) = \mathcal{N}(w; \bm{m}_0, \beta ^{-1} \alpha ^{-1} \bm{I}_N) \text{Gam} ( \beta; a_0, b_0), \quad \text{prior} \\
+	p(y|w) = \mathcal{N}(y;\bm{Xw}, \beta ^{-1} \bm{I}_N), \quad \text{likelihood}
 \end{aligned}
 \end{equation}
 

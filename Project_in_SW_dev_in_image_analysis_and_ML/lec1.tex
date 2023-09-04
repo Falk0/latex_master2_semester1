@@ -1,3 +1,142 @@
 %!TEX root = master.tex
 
-\section{Introduction}
+\section{Requirement engineering}
+Requirements are about \textbf{What} not \textbf{How}. The \textbf{definition}: Requirements are a specification of what should be implemented. They are descriptions of how a system should behave, or of a system property or attribute. They may be a constraint on the development process of the system. 
+
+\subsection{Customers}
+\textbf{Stakeholder} is a person, group or organization that: 
+\begin{itemize}
+	\item is actively  working in a project
+	\item is affected by the process or outcome
+	\item or can influence the outcome
+	\item Stakeholders can be internal or external to the project team and to developing organization.
+\end{itemize}
+
+\textbf{A customer} is an individual or organization that derives either direct or indirect benefit from the product that is being developed. 
+
+The \textbf{user} are a subset of the customer who will actually use the product. We can distinguish two types of these:
+\begin{itemize}
+	\item Direct users that will operate the product hands-on
+	\item Indirect users might receive outputs from the system without touching it/come in contact themselves.
+\end{itemize}
+
+\subsection{User vs System requirements}
+\textbf{User requirements }are goals or tasks that \textcolor{blue}{specific classes of users} \textcolor{red}{must} be able to perform with a system, or a \textcolor{red}{desired} product attribute. 
+
+\textbf{System requirements} are Top-level requirements for a product and can be software or software + hardware.
+
+The user requirements are usually \emph{abstract, in natural language and what the customer wants} while the system requirements are more \emph{concrete and detailed, Natural+formal language, what system provides and is used as a product description }
+
+\begin{example}{A software example}
+User requirements:
+\begin{itemize}
+	\item I need to print a mailing label for a package
+	\item As the lead machine operator, I need to calibrate the pump controller first thing every morning
+\end{itemize}
+
+System requirements:
+\begin{itemize}
+	\item If the pressure exceeds 40.0 psi	the high pressure warning light should come on.
+	\item The user must be able to sort the project list in forward and reverse alphabetical order. 
+\end{itemize}
+\end{example}	
+
+
+
+\subsection{User requirements}
+Written as the use cases/user stories (agile). Informed by 0. Domain requirements: "everyone knows that...". 
+\begin{itemize}
+	\item \textbf{Use case} 
+		\begin{itemize}
+			\item Sequence of interactions between a system and external actor to achieve an outcome of value. 
+		\end{itemize}
+	\item \textbf{User Story} 
+		\begin{itemize}
+			\item Short, simple description of a feature told from the perspective of who wants it, e.g., user or customer from the system.
+			\item As a \textcolor{green}{USER ROLE}, I want \textcolor{blue}{DO SOMETHING} so that \textcolor{red}{REASON}  	
+		\end{itemize}
+\end{itemize}
+
+
+\begin{itemize}
+	\item \textbf{User classes}
+		\begin{itemize}
+			\item Subset of product's customer
+			\item An individual can belong to several classes
+			\item Each user class must have a set of requirements 
+			\item Classes need to be human beings
+		\end{itemize} 
+	\item \textbf{What process to use}
+		\begin{itemize}
+			\item User personas - A description of a representative of a user class with similar characteristics and needs
+			\item User representatives - A suitable representative to provide the voice of the user.
+			\item Product Champion - An intermediary gathering requirements form the users for us.
+		\end{itemize}
+\end{itemize}
+
+In \emph{agile} methods all user classes are represented by the \textcolor{blue}{product owner} 
+
+\subsection{System requirements}
+We can divide it into two categories: functional and non-functional:
+
+\textbf{Functional Requirements}
+\begin{itemize}
+	\item Behavior that a system will exhibit under specific conditions
+	\item Describes \textcolor{blue}{what} developers must implement to satisfy under requirements
+	\item Written as "shall" statements
+\end{itemize}
+
+\begin{example}{Example: Functional system requirements}
+	\begin{itemize}
+		\item The passenger \textcolor{blue}{shall be able to} print boarding passes for all flight segments for which he has checked in.
+		\item If the passenger's profile does not indicate a seating preference, the reservation system \textcolor{blue}{shall} assign a set.
+	\end{itemize}
+\end{example}	 
+
+\textbf{Non-functional Requirements}
+\begin{itemize}
+	\item Describe \textcolor{blue}{how well} a system does what it must do
+	\item Quality standard of the system
+	\item Must be measurable
+\end{itemize}
+
+Here are some \textcolor{blue}{metrics} for \textbf{Non-functional System Requirements}
+
+\begin{table}[ht!]
+    \centering
+    \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Property} & \textbf{Measure} \\
+        \hline
+        Speed & Processed transactions/second \\
+             & User/event response time \\
+             & Screen refresh time \\
+        \hline
+        Size & Mbytes \\
+             & Number of ROM chips \\
+        \hline
+        Ease of use & Training time \\
+                    & Number of help frames \\
+        \hline
+        Reliability & Mean time to failure \\
+                    & Probability of unavailability \\
+                    & Rate of failure occurrence \\
+                    & Availability \\
+        \hline
+        Robustness & Time to restart after failure \\
+                   & Percentage of events causing failure \\
+                   & Probability of data corruption on failure \\
+        \hline
+        Portability & Percentage of target dependent statements \\
+                    & Number of target systems \\
+        \hline
+    \end{tabular}
+    \caption{Example}
+    \label{tab:tab1}
+\end{table}
+
+
+
+
+
+
